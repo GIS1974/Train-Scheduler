@@ -26,9 +26,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card mb-4">
-                    <div class="card-header" style="background-color:rgb(50, 50, 130); color: white; font-weight: bold">Current Train Schedule</div>
+                    <div class="card-header" style="background-color:rgb(50, 50, 130); color: white; font-weight: bold">
+                        Current Train Schedule</div>
                     <div class="card-body">
-                        <table class="table table-sm table-hover" id='train-table'>
+                        <table class="table table-sm table-hover" id="train-table">
                             <thead>
                                 <tr>
                                     <th scope="col">Train Name</th>
@@ -49,7 +50,8 @@
             <div class="col-md-12">
                 <!-- Add Train  -->
                 <div class="card mb-4">
-                    <div class="card-header" style="background-color:rgb(50, 50, 130); color: white; font-weight: bold">Add Train</div>
+                    <div class="card-header" style="background-color:rgb(50, 50, 130); color: white; font-weight: bold">
+                        Add Train</div>
                     <div class="card-body">
 
                         <!-- Entry Form -->
@@ -60,17 +62,18 @@
                             </div>
                             <div class="form-group">
                                 <label for="destination-input">Destination</label>
-                                <input class="form-control" id="role-input" placeholder="" type="text">
+                                <input class="form-control" id="destination-input" placeholder="" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="first-train-time-input">First Train Time (HH:mm military time)</label>
-                                <input class="form-control" id="first-train-time-input" placeholder="" type="text">
+                                <label for="first-train-time-input">First Train Time</label>
+                                <input class="form-control" id="first-train-time-input" placeholder="HH:MM (24-hour format)" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="frequency-input">Frequency (min)</label>
                                 <input class="form-control" id="frequency-input" placeholder="" type="text">
                             </div>
-                            <button class="btn btn-primary float-right" id="add-employee-btn" style="background-color:green; border: 0; font-weight: bold">Submit</button>
+                            <button class="btn btn-primary float-right" id="add-train-btn"
+                                style="background-color:green; border: 0; font-weight: bold">Submit</button>
                         </form>
 
                     </div>
@@ -78,6 +81,9 @@
             </div>
         </div>
     </div>
+
+    <!-- JavaScript -->
+    <script src="assets/javascript/app.js"></script>
 </body>
 
 </html>
