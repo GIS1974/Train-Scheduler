@@ -58,7 +58,7 @@ database.ref().on("child_added", function (childSnapshot) {
     var nextArrival;
     var minutesAway;
 
-    console.log("first Train Time" + firstTrainTime);
+    console.log("first Train Time: " + firstTrainTime);
 
     // Train Info
     // console.log(trainName);
@@ -73,20 +73,21 @@ database.ref().on("child_added", function (childSnapshot) {
     // console.log("converted time: " + convertTime);
 
     //23:00 -> 11:00PM
-    var firstTrain = moment(firstTrainTime, "hh:mm").subtract(1, "years");
-    console.log("first Train time: " + firstTrain);
-
-    var trainTime = moment(firstTrain, "hh:mm").subtract(1, "years");
-
+    var firstTrain = moment(firstTrainTime, "HH:mm").subtract("years");
+    console.log("first Train: " + firstTrain);
 
     //number of minutes between first train and now
-    var timeGap = moment().diff(moment(firstTrainTime), "minutes");
-    // console.log("timeGap (min): " + timeGap);
+    var timeGap = moment().diff(moment(firstTrain), "minutes");
+    console.log("time Gap: " + timeGap);
+
     var remainder = timeGap % trainFrequency;
+    console.log("remainder: " + remainder);
+
     minutesAway = trainFrequency - remainder;
+    console.log("minutes Away: " + minutesAway);
 
     var nextTrain = moment().add(minutesAway, "minutes");
-    nextArrival = moment(nextTrain).format("hh:mm");
+    nextArrival = moment(nextTrain).format("LT");
 
     // Create the new row
     var newRow = $("<tr>").append(
