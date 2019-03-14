@@ -2,3 +2,9 @@
 display: inline-block;
 width: 20%;
 }
+
+.invalid {
+    color: red;
+    font-size: 15px;
+    margin-left: 10px;
+}

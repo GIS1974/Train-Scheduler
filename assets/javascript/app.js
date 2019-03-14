@@ -8,6 +8,8 @@ var config = {
     // messagingSenderId: "685844699041"
 };
 
+var a = $("<p>/p>");
+
 firebase.initializeApp(config);
 
 var database = firebase.database();
@@ -15,40 +17,74 @@ var database = firebase.database();
 // 2. Button for adding Trains
 $("#add-train-btn").on("click", function (event) {
     event.preventDefault();
+    a.empty();
 
     // Grabs user input
     var trainName = $("#train-name-input").val().trim();
     var trainDestination = $("#destination-input").val().trim();
     var trainFirstTime = $("#first-train-time-input").val().trim();
     var trainFrequency = $("#frequency-input").val().trim();
+    // var valid = validation(trainName);
 
-    // Creates local "temporary" object for holding train data
-    var newTrain = {
-        name: trainName,
-        destination: trainDestination,
-        first: trainFirstTime,
-        frequency: trainFrequency
-    };
+    if (trainName.length !== 0 && trainDestination.length !== 0 && trainFirstTime.length !== 0 && trainFrequency.length !== 0 && isNaN(trainFirstTime) == false && isNaN(trainFrequency) == false) {
 
-    // Uploads employee data to the database
-    database.ref().push(newTrain);
+        // Creates local "temporary" object for holding train data
+        var newTrain = {
+            name: trainName,
+            destination: trainDestination,
+            first: trainFirstTime,
+            frequency: trainFrequency
+        };
 
-    // Logs everything to console
-    // console.log(newTrain.name);
-    // console.log(newTrain.destination);
-    // console.log(newTrain.first);
-    // console.log(newTrain.frequency);
+        // Uploads employee data to the database
+        database.ref().push(newTrain);
 
-    // Clear all of the text boxes
-    $("#train-name-input").val("");
-    $("#destination-input").val("");
-    $("#first-train-time-input").val("");
-    $("#frequency-input").val("");
-});
+        // Clear all of the text boxes
+        $("#train-name-input").val("");
+        $("#destination-input").val("");
+        $("#first-train-time-input").val("");
+        $("#frequency-input").val("");
+
+    } else {
+        if (trainName.length == 0) {
+            $("#form-group-1").append(a);
+            a.addClass("invalid");
+            $(a).text("Please fill the field");
+        }
+        else if (trainDestination.length == 0) {
+            $("#form-group-2").append(a);
+            a.addClass("invalid");
+            $(a).text("Please fill the field");
+        }
+        else if (trainFirstTime.length == 0) {
+            $("#form-group-3").append(a);
+            a.addClass("invalid");
+            $(a).text("Please fill the field");
+        }
+        else if (isNaN(trainFirstTime) == true) {
+            $("#form-group-3").append(a);
+            a.addClass("invalid");
+            $(a).text("Please enter time in military format HHMM");
+            $("#first-train-time-input").val('');;
+        }
+        else if (trainFrequency.length == 0) {
+            $("#form-group-4").append(a);
+            a.addClass("invalid");
+            $(a).text("Please fill the field");
+        }
+        else if (isNaN(trainFrequency) == true) {
+            $("#form-group-4").append(a);
+            a.addClass("invalid");
+            $(a).text("Please enter a number");
+            $("#frequency-input").val('');;
+
+        }
+    }
+}
+)
 
 // 3. Create Firebase event for adding new train to the database and a row in the html when a user adds an entry
 database.ref().on("child_added", function (childSnapshot) {
-    // console.log(childSnapshot.val());
 
     // Store everything into a variable.
     var trainName = childSnapshot.val().name;
@@ -60,24 +96,12 @@ database.ref().on("child_added", function (childSnapshot) {
 
     console.log("first Train Time: " + firstTrainTime);
 
-    // Train Info
-    // console.log(trainName);
-    // console.log(trainDestination);
-    // console.log("trainFirstTime: " + trainFirstTime);
-    // console.log(trainFrequency);
+    firstTrainTime = moment(firstTrainTime, "HH:mm");
 
-    // Prettify the Train first time
-    // var trainFirstTimePretty = moment.unix(trainFirstTime).format("HH:MM");
-
-    // var convertTime = Date.parse(trainFirstTime);
-    // console.log("converted time: " + convertTime);
-
-    //23:00 -> 11:00PM
-    var firstTrain = moment(firstTrainTime, "HH:mm").subtract("years");
-    console.log("first Train: " + firstTrain);
+    console.log("first Train: " + firstTrainTime);
 
     //number of minutes between first train and now
-    var timeGap = moment().diff(moment(firstTrain), "minutes");
+    var timeGap = moment().diff(moment(firstTrainTime), "minutes");
     console.log("time Gap: " + timeGap);
 
     var remainder = timeGap % trainFrequency;
@@ -100,8 +124,5 @@ database.ref().on("child_added", function (childSnapshot) {
 
     // Append the new row to the table
     $("#train-table > tbody").append(newRow);
-});
 
-// var date1 = new Date('01/01/1970 + "trainFirstTime"');
-// alert(now);
-// console.log(now);
+})
